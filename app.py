@@ -492,23 +492,62 @@ def page_unitisation():
 
 
 # ----------------------------------------------------------------------------
-# Router
+# Navigation
 # ----------------------------------------------------------------------------
-PAGES = {
-    "home": page_home,
-    "npv_irr": page_npv_irr,
-    "ratios": page_ratios,
-    "dcf": page_dcf,
-    "nav": page_nav,
-    "unitisation": page_unitisation,
-}
+def build_navigation():
+    """Sidebar tabs, grouped into the two disciplines the toolkit covers."""
+    return st.navigation(
+        {
+            "Finance Toolkit": [
+                st.Page(
+                    page_home,
+                    title="Home",
+                    icon=":material/home:",
+                    default=True,
+                ),
+            ],
+            "Corporate finance": [
+                st.Page(
+                    page_npv_irr,
+                    title="NPV & IRR",
+                    icon=":material/trending_up:",
+                    url_path="npv-irr",
+                ),
+                st.Page(
+                    page_ratios,
+                    title="Ratio Analysis",
+                    icon=":material/percent:",
+                    url_path="ratio-analysis",
+                ),
+                st.Page(
+                    page_dcf,
+                    title="DCF Sensitivity",
+                    icon=":material/grid_on:",
+                    url_path="dcf-sensitivity",
+                ),
+            ],
+            "Fund accounting": [
+                st.Page(
+                    page_nav,
+                    title="NAV Calculation",
+                    icon=":material/account_balance:",
+                    url_path="nav-calculation",
+                ),
+                st.Page(
+                    page_unitisation,
+                    title="Unitisation",
+                    icon=":material/receipt_long:",
+                    url_path="unitisation",
+                ),
+            ],
+        }
+    )
 
 
 def main():
-    st.sidebar.title("Finance Toolkit")
-    choice = st.sidebar.radio("Tool", list(TOOLS.keys()), label_visibility="collapsed")
+    page = build_navigation()
     st.sidebar.divider()
-    PAGES[TOOLS[choice]]()
+    page.run()
     st.sidebar.divider()
     st.sidebar.caption("Built with Streamlit. Sample data is illustrative only.")
 
