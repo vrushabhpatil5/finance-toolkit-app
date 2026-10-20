@@ -12,7 +12,7 @@ import pandas as pd
 import streamlit as st
 
 from core import dcf, nav, npv_irr, ratios, unitisation
-from core.io_utils import load_csv, to_csv_bytes
+from core.io_utils import DATA_DIR, load_csv, to_csv_bytes
 
 st.set_page_config(
     page_title="Finance Toolkit",
@@ -29,9 +29,38 @@ TOOLS = {
     "Unitisation": "unitisation",
 }
 
+SAMPLE_FILES = {
+    "sample_cashflows.csv": "NPV & IRR cash flows",
+    "sample_financials.csv": "Ratio analysis financials",
+    "forecast_cashflows.csv": "DCF forecast free cash flows",
+    "sample_fund_positions.csv": "NAV fund positions",
+    "sample_liabilities.csv": "NAV liabilities",
+    "sample_investor_transactions.csv": "Investor transactions",
+}
+
+
+@st.cache_data
+def read_sample(sample_name: str) -> bytes:
+    """Raw bytes of a bundled sample CSV, used as a download template."""
+    return (DATA_DIR / sample_name).read_bytes()
+
+
+def sample_download(sample_name: str, key: str, container=None, label: str | None = None):
+    """Button that hands the user a correctly formatted CSV to edit and re-upload."""
+    target = container if container is not None else st
+    target.download_button(
+        label or "Download sample format",
+        data=read_sample(sample_name),
+        file_name=sample_name,
+        mime="text/csv",
+        key=f"{key}_sample",
+        width="stretch",
+        help="A correctly formatted CSV. Edit it with your own figures, then upload it above.",
+    )
+
 
 def sidebar_source(label: str, sample_name: str, key: str):
-    """Upload widget plus the bundled sample fallback."""
+    """Upload widget, bundled sample fallback, and a template download."""
     uploaded = st.sidebar.file_uploader(label, type="csv", key=key)
     try:
         df, source = load_csv(uploaded, sample_name)
@@ -39,6 +68,7 @@ def sidebar_source(label: str, sample_name: str, key: str):
         st.error(f"Could not read {label.lower()}: {error}")
         st.stop()
     st.sidebar.caption(f"Using {source}")
+    sample_download(sample_name, key, container=st.sidebar)
     return df
 
 
@@ -83,6 +113,20 @@ def page_home():
             "- **Unitisation** - subscription and redemption ledger with unit "
             "creation and cancellation by dealing date"
         )
+
+    st.divider()
+
+    st.subheader("Sample formats")
+    st.caption(
+        "Download any of these, replace the figures with your own, then upload "
+        "the file on the matching tool page."
+    )
+    columns = st.columns(3)
+    for index, (filename, description) in enumerate(SAMPLE_FILES.items()):
+        with columns[index % 3]:
+            st.markdown(f"**{description}**")
+            st.caption(filename)
+            sample_download(filename, f"home_{index}", label="Download")
 
     st.divider()
     st.caption(
