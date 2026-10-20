@@ -1,0 +1,6 @@
+Date,Investor,Type,Amount_Base
+2026-01-02,Investor_A,Subscription,25000
+2026-01-02,Investor_B,Subscription,15000
+2026-01-03,Investor_A,Redemption,5000
+2026-01-03,Investor_C,Subscription,10000
+2026-01-04,Investor_B,Redemption,3000
