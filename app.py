@@ -15,7 +15,7 @@ from core import dcf, nav, npv_irr, ratios, unitisation
 from core.io_utils import DATA_DIR, load_csv, to_csv_bytes
 
 st.set_page_config(
-    page_title="💸Finance Toolkit",
+    page_title="Finance Toolkit",
     page_icon="💸",
     layout="wide",
 )
