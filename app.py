@@ -15,8 +15,8 @@ from core import dcf, nav, npv_irr, ratios, unitisation
 from core.io_utils import DATA_DIR, load_csv, to_csv_bytes
 
 st.set_page_config(
-    page_title="Finance Toolkit",
-    page_icon="📊",
+    page_title="💸Finance Toolkit",
+    page_icon="💸",
     layout="wide",
 )
 
@@ -85,7 +85,7 @@ def download(label: str, df: pd.DataFrame, filename: str, index: bool = False):
 # Home
 # ----------------------------------------------------------------------------
 def page_home():
-    st.title("Finance Toolkit")
+    st.title("💸Finance Toolkit")
     st.write(
         "Corporate finance analysis and fund accounting calculations in one place. "
         "Pick a tool from the sidebar. Each one runs on bundled sample data by "
@@ -95,7 +95,7 @@ def page_home():
     left, right = st.columns(2)
 
     with left:
-        st.subheader("Corporate finance")
+        st.subheader("💰Corporate finance")
         st.markdown(
             "- **NPV & IRR** - net present value, internal rate of return, "
             "payback period and an NPV profile curve\n"
@@ -106,7 +106,7 @@ def page_home():
         )
 
     with right:
-        st.subheader("Fund accounting")
+        st.subheader("📊Fund accounting")
         st.markdown(
             "- **NAV Calculation** - position valuation in base currency, "
             "liabilities, NAV per unit and currency exposure\n"
